@@ -1,201 +1,224 @@
+import React, { useState } from 'react';
+import { Text, View, StyleSheet, Button } from 'react-native';
 
-import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+class App2 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      num: 0,
+    };
+  }
+  render() {
+    return (
+      <View style={{ paddingTop: 100 }}>
+        <Text style={stylesApp2.heading}>Class Based Component</Text>
+      </View>
+    );
+  }
+}
+const stylesApp2 = StyleSheet.create({
+  heading: {
+    fontSize: 20,
+    textAlign: 'center',
+  },
+});
+export default function App() {
+   
+   const [solution,setSolution] = useState('') ;
+   const [getugn, setugnn]=useState(Math.floor(Math.random()*100));
+   const [getsgn,setsgn]=useState('');
+   const [getresult,setresult]=useState('');
+   const [gethint,sethint]=useState('');
+   const [gethint1,sethint1]=useState('');
+   const [getcount,setcount]=useState(0);
+   const [getscore,setscore]=useState(0);
+   const [getturn,setturn]=useState(0);                    
+  const GAME_START_MESSAGE = 'Guess a Number';
+               
+  const [getNum, setNum] = useState(GAME_START_MESSAGE);
 
+  const numClick = (e) => {
+    // alert(1)
+    if (getNum === 0) setNum(e);
+    else setNum(getNum + '' + e);
 
-  class App extends React.Component{
-    //HERE I AM DECLARING A CONSTRUCTOR 
-    constructor(){
-          super();
-    //HERE I AM DECLARING AN OBJECT WHICH HAS solution and array result
-          this.state = {
-              solution: "" ,
-              ugn: Math.floor(Math.random()*100),
-              sgn:"",
-              result:"",
-              hint:"",
-              hint1:"",
-              count:1,
-              score:0,
-              turn:1,
-              disabled:""
-  
-          }
-      }
+  };
+ 
     
-  
-    //HERE I AM ADDING EVENT LISTNER TO ALL BUTTONS
-      onClick = button => {
-        var z= this.state.ugn
-        if(this.state.count===5){
-          this.setState({
-            hint:"You lost the game",
-            result:z,
-            
-          });
+ const onClick = button => {
+        var z= getugn
+        if(getcount===5){
+            sethint("You lost the game"),
+            setresult(z)   
         }
-  
         else if(button === "CE"){
-          this.backspace()
+          backspace()
         }//NOW IF I CLICK CE BUTTON IT WILL DELETE VERY LAST DIGIT NUMBER   
        
         else if(button === "reset"){
-          this.reset()
+         // reset()
         }//NOW IF I CLICK C BUTTON IT WILL RESET EVERYTHING
          else if(button === "="){
-           this.calculate()
+           calculate()
            //TASK#01
            var c=1;
-           c=this.state.count+1
-          this.setState({
-            count:c,
-            turn:c,
-          })
-         
+           c=getcount+1
+           setcount(c)
+           setturn(c)         
         }//NOW IF I CLICK = BUTTON THE RESULT WILL BE DISPLAYED 
         else if(button === "h"){
-          this.hint1()
-        }
-      
+          hint1()
+        }    
         else {
-          this.setState({
-            solution: 
-                this.state.solution + button
-           })
+            setSolution(solution+button)
+                   
          }//THIS IS EVENT LISTNER FOR EVERYOTHER BUTTON e.g 1, 2, 3, 4, 5,... etc
       };
-      hint1 = () =>{
-        var ugn=this.state.ugn;
-        var h=ugn;
+      function hint1(){
+        var ugn=getugn;
+        var h=getugn;
         var h1=h;
         if(h<100){
             h=h%5;
             h+=2;
             h-=2;
             h+=ugn;
-  
             h1=h;
             h1=ugn-5;
             var z ="Range is "+h1+" and "+h
-            this.setState({
-              hint1: z,
-            });
-         
+            sethint1(z);
+            setscore(getscore-2);
         }
-      
-      }
-  
-     
+      }   
       //THIS ARROW FUNCTION WILL BE INVOLVE IN CALCULATING CORRECT RESULTS
-      calculate = () => {
-        console.log(this.state.ugn)
-        var sgn=this.state.solution;
-        var ugn=this.state.ugn;
+     const calculate = () => {
+        console.log(getugn)
+        var sgn=solution;
+        var ugn=getugn;
         console.log(ugn,sgn)
-        var s=this.state.score
+        var s=getscore
         if(ugn==sgn){
-          this.setState({
-            result: "Correct. You won!!",
-            score:100
-  
-          });
+          setresult("Correct. You won!!")
+          setscore(getscore+5)
+          setturn(getturn+5)
+          setSolution("")
+          setugnn(Math.floor(Math.random()*100))
         }
         else{
-          this.setState({
-            result: "Wrong Guess",
-            solution:"",
-            score:"0"
-           
-          })
+          setresult("Wrong Guess");
+          setSolution("");
         }
       };
   
-      buttonClick=(e)=>{
+      const backspace=()=>{
+
+      }
+      const buttonClick=(e)=>{
         e.preventDefault();
         this.setState({button:e.target.name, countClick:this.state.countClick+1});
       } 
       
       //THIS WILL SET THE STATE OF THE INPUT TEXT TO EMPTY STRING
       //TASK#03
-      reset = () => {
-          this.setState({
-              solution: "",
-              hint:"",
-              hint1:"",
-              result:"",
-              score:"",
-              turn:"",
-  
-  
-  
-          })
+     const  reset = () => {
+       setSolution("");
+       setcount(0);
+       sethint("");
+       sethint1("");
+       setresult("");
+       setscore(0);
+       setsgn(0);
+       setugnn(Math.floor(Math.random()*100));
+       setturn(0);
       };
-     
- 
-  render() {
-   
 
-  return (
+  const message = (
+    <View>
+      <Text style={{ textAlign: 'center', fontSize: 20 }}>Welcome to Number Guessing Game</Text>
+      <Button title="Start Game" onPress={() => setNum(0)} />
+    </View>
+  );
+  const end = (
+    <View>
+    <Text style={{ textAlign: 'center', fontSize: 20 }}>Game ended</Text>
+    <Text style={{ textAlign: 'center', fontSize: 20 }}>Your score is {getscore}</Text>
     
+      <Button title="Finish" onPress={() => {
+        setNum(GAME_START_MESSAGE);
+        reset();
+      }} />
+    <Button title="Play Again" onPress={() => {
+      setNum(0);
+      reset();
+    }} />
     
-    
-    
+    </View>
 
-    
-  
-    <View style={styles.cbody}>
-    
+
+  );
+  const gameView = (
+        <View style={styles.cbody}>  
    
-    <Text style={styles.textcontainer}>{this.state.solution}</Text>
-    <Text style={styles.textcontainer}>{this.state.result}</Text>
-    <Text style={styles.textcontainer}>Hint: {this.state.hint1}</Text>
+    <Text style={styles.textcontainer}>{solution}</Text>
+    <Text style={styles.textcontainer}>{getresult}</Text>
+    <Text style={styles.textcontainer}>Hint: {gethint1}</Text>
   
-    <Text style={styles.textcontainer}>Score: {this.state.score}</Text>
-    <Text style={styles.textcontainer}>Turn: {this.state.turn}</Text>
+    <Text style={styles.textcontainer}>Score: {getscore}</Text>
+    <Text style={styles.textcontainer}>Turn: {getturn}</Text>
   
 
   <View style={{}}>
-  <View style={{width:100}}><Button  title="reset" onPress={ this.onClick.bind(this,'reset')}/></View>
+  <View style={{width:100}}><Button  title="reset" onPress={ onClick.bind(this,'reset')}/></View>
    
 </View>
   <View style={styles.viewcontainer}>
 
-    <View style={styles.buttoncontainer}><Button  title="1" onPress={ this.onClick.bind(this,'1')}/></View>
-    <View style={styles.buttoncontainer}><Button  title="2" onPress={this.onClick.bind(this,'2')}/></View>
-    <View style={styles.buttoncontainer}><Button  title="3" onPress={this.onClick.bind(this,'3')}/></View>
+    <View style={styles.buttoncontainer}><Button  title="1" onPress={ onClick.bind(this,'1')}/></View>
+    <View style={styles.buttoncontainer}><Button  title="2" onPress={onClick.bind(this,'2')}/></View>
+    <View style={styles.buttoncontainer}><Button  title="3" onPress={onClick.bind(this,'3')}/></View>
   
   </View>
   
   <View style={styles.viewcontainer}>
     
-    <View style={styles.buttoncontainer}><Button  title="4" onPress={this.onClick.bind(this,'4')}/></View>  
-    <View style={styles.buttoncontainer}><Button  title="5" onPress={this.onClick.bind(this,'5')}/></View>
-    <View style={styles.buttoncontainer}><Button title="6" onPress={this.onClick.bind(this,'6')}/></View>
+    <View style={styles.buttoncontainer}><Button  title="4" onPress={onClick.bind(this,'4')}/></View>  
+    <View style={styles.buttoncontainer}><Button  title="5" onPress={onClick.bind(this,'5')}/></View>
+    <View style={styles.buttoncontainer}><Button title="6" onPress={onClick.bind(this,'6')}/></View>
   
   </View>
   
   <View style={styles.viewcontainer}>
   
-    <View style={styles.buttoncontainer}><Button  title="7" onPress={this.onClick.bind(this,'7')}/></View>
-    <View style={styles.buttoncontainer}><Button  title="8" onPress={this.onClick.bind(this,'8')}/></View>
-    <View style={styles.buttoncontainer}><Button  title="9" onPress={this.onClick.bind(this,'9')}/></View>
+    <View style={styles.buttoncontainer}><Button  title="7" onPress={onClick.bind(this,'7')}/></View>
+    <View style={styles.buttoncontainer}><Button  title="8" onPress={onClick.bind(this,'8')}/></View>
+    <View style={styles.buttoncontainer}><Button  title="9" onPress={onClick.bind(this,'9')}/></View>
      
   </View>
   
   <View style={{flexDirection:"row", justifyContent:"space-between"}}>
-      <View style={styles.buttoncontainer}><Button  title="0" onPress={this.onClick.bind(this,'0')}/></View>
-      <View style={styles.buttoncontainer}><Button  title="h" onPress={this.onClick.bind(this,'h')}/></View>
-      <View style={styles.buttoncontainer}><Button  title="=" onPress={this.onClick.bind(this,'=')}/></View>
+      <View style={styles.buttoncontainer}><Button  title="0" onPress={onClick.bind(this,'0')}/></View>
+      <View style={styles.buttoncontainer}><Button  title="h" onPress={hint1}/></View>
+      <View style={styles.buttoncontainer}><Button  title="=" onPress={onClick.bind(this,'=')}/></View>
       
 </View>
       </View>
+       );
 
+  return (
+    <View style={styles.container}>
+      {getNum === GAME_START_MESSAGE ? message : getturn<5 ? gameView: end }
+    </View>
   );
-  }
+  
 }
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+  },
   cbody:{
   borderRadius:1,
   borderColor:"black",
@@ -213,6 +236,4 @@ const styles = StyleSheet.create({
     flexDirection:"row", 
     justifyContent:"space-between",
   }
-
 });
-export default App;
